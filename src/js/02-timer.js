@@ -2,32 +2,34 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
-const options = {
-    enableTime: true,
-    time_24hr: true,
-    defaultDate: new Date(),
-    minuteIncrement: 1,
-    onClose(selectedDates) {
-        const deadlineTime = selectedDates[0].getTime();
-        const currentTime = options.defaultDate.getTime();
-        if (deadlineTime - currentTime > 0) {
-            getRef('[data-start]').toggleAttribute('disabled');
-        } else {
-            Notiflix.Notify.failure('Please choose a date in the future');
-        }
-    },
-};
-flatpickr('#datetime-picker', options);
+
 
 class Timer {
-    constructor({ btnStart, deadlineTime, onShowTime }) {
+    constructor({ btnStart, flatpickr, onShowTime }) {
         this.btnStart = btnStart;
+        this.flatpickr = flatpickr;
         this.onShowTime = onShowTime;
-        this.deadlineTime = deadlineTime;
+        this.deadlineTime = null;
         this.intervalId = null;
         this.deltaTime = 0;
     }
     init() {
+        const options = {
+            enableTime: true,
+            time_24hr: true,
+            defaultDate: new Date(),
+            minuteIncrement: 1,
+            onClose(selectedDates) {
+                this.deadlineTime = selectedDates[0].getTime();
+                const currentTime = options.defaultDate.getTime();
+                if (deadlineTime - currentTime > 0) {
+                    getRef('[data-start]').toggleAttribute('disabled');
+                } else {
+                    Notiflix.Notify.failure('Please choose a date in the future');
+                }
+            },
+        };
+        this.flatpickr('#datetime-picker', options);
         this.addListeners();
         this.btnStart.setAttribute('disabled', true);
     }
@@ -80,7 +82,7 @@ class Timer {
 let getRef = x => document.querySelector(x);
 const settings = {
     btnStart: getRef('[data-start]'),
-    deadlineTime,
+    flatpickr,
     onShowTime,
 };
 
