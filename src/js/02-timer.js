@@ -8,7 +8,7 @@ const options = {
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-        deadlineTime = selectedDates[0].getTime();
+        const deadlineTime = selectedDates[0].getTime();
         const currentTime = options.defaultDate.getTime();
         if (deadlineTime - currentTime > 0) {
             getRef('[data-start]').toggleAttribute('disabled');
