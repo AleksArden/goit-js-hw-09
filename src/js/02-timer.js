@@ -22,7 +22,7 @@ class Timer {
             onClose(selectedDates) {
                 this.deadlineTime = selectedDates[0].getTime();
                 const currentTime = options.defaultDate.getTime();
-                if (deadlineTime - currentTime > 0) {
+                if (this.deadlineTime - currentTime > 0) {
                     getRef('[data-start]').toggleAttribute('disabled');
                 } else {
                     Notiflix.Notify.failure('Please choose a date in the future');
