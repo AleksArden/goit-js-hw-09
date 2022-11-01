@@ -20,10 +20,10 @@ const options = {
 flatpickr('#datetime-picker', options);
 
 class Timer {
-    constructor({ btnStart, onShowTime }) {
+    constructor({ btnStart, deadlineTime, onShowTime }) {
         this.btnStart = btnStart;
         this.onShowTime = onShowTime;
-        this.deadlineTime;
+        this.deadlineTime = deadlineTime;
         this.intervalId = null;
         this.deltaTime = 0;
     }
@@ -48,7 +48,7 @@ class Timer {
     }
     onGetTime() {
         const currentTime = Date.now();
-        this.deltaTime = deadlineTime - currentTime;
+        this.deltaTime = this.deadlineTime - currentTime;
         const time = this.convertMs(this.deltaTime);
         this.onShowTime(time);
     }
@@ -80,6 +80,7 @@ class Timer {
 let getRef = x => document.querySelector(x);
 const settings = {
     btnStart: getRef('[data-start]'),
+    deadlineTime,
     onShowTime,
 };
 
