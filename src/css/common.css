@@ -23,10 +23,42 @@ img {
   gap: 30px;
   height: 100vh;
 }
-button {
+button[data-start],
+button[data-stop] {
+  margin-left: 30px;
   width: 120px;
   height: 50px;
   border: 1px solid;
   border-radius: 4px;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  font-size: 20px;
+}
+
+.timer {
+  display: flex;
+  gap: 30px;
+  margin-top: 50px;
+  margin-left: 50px;
+}
+.field {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+.value {
+  font-size: 35px;
+  font-weight: 600;
+  color: red;
+}
+.label {
+  font-size: 20px;
+}
+.flatpickr-input {
+  height: 50px;
+  border: 1px solid;
+  border-radius: 4px;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  text-align: center;
+  font-size: 20px;
 }

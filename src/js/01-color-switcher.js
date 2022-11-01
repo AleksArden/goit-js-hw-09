@@ -1,7 +1,7 @@
-let getRef = selector => document.querySelector(selector)
 
-class Colorpicker {
-    constructor({ refs: { btnStart, btnStop, bodyRef } }) {
+
+class Colorswitcher {
+    constructor({ btnStart, btnStop, bodyRef }) {
         this.btnStart = btnStart;
         this.btnStop = btnStop;
         this.bodyRef = bodyRef;
@@ -9,40 +9,40 @@ class Colorpicker {
     }
     init() {
         this.addListeners();
+        this.btnStop.setAttribute('disabled', true);
     }
     addListeners() {
         this.btnStart.addEventListener('click', this.start.bind(this));
         this.btnStop.addEventListener('click', this.stop.bind(this));
     }
     start() {
-        this.bodyRef.style.background = getRandomHexColor();
-        this.btnStart.setAttribute('disabled', '');
-        this.btnStop.removeAttribute('disabled');
+        this.changeColorBody();
+        this.changeAttribute();
         this.timerId = setInterval(() => {
-            this.bodyRef.style.background = getRandomHexColor();
+            this.changeColorBody();
         }, 1000);
     }
     stop() {
         clearInterval(this.timerId);
-        this.btnStop.setAttribute('disabled', '');
-        this.btnStart.removeAttribute('disabled');
+        this.changeAttribute();
     }
+    changeAttribute() {
+        this.btnStart.toggleAttribute('disabled');
+        this.btnStop.toggleAttribute('disabled');
+    }
+    changeColorBody() {
+        this.bodyRef.style.background = this.getRandomHexColor();
+    }
+    getRandomHexColor() {
+        return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    }
+
 }
+let getRef = x => document.querySelector(x)
+const refs = {
+    btnStart: getRef('[data-start]'),
+    btnStop: getRef('[data-stop]'),
+    bodyRef: getRef('body'),
+};
 
-const settings = {
-    refs: {
-        btnStart: getRef('[data-start]'),
-        btnStop: getRef('[data-stop]'),
-        bodyRef: getRef('body'),
-    },
-
-}
-
-new Colorpicker(settings).init();
-
-
-
-
-function getRandomHexColor() {
-    return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-}
+new Colorswitcher(refs).init();
