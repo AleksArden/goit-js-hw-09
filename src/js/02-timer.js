@@ -2,6 +2,21 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
+const options = {
+    enableTime: true,
+    time_24hr: true,
+    defaultDate: new Date(),
+    minuteIncrement: 1,
+    onClose(selectedDates) {
+        deadlineTime = selectedDates[0].getTime();
+        const currentTime = options.defaultDate.getTime();
+        if (deadlineTime - currentTime > 0) {
+            getRef('[data-start]').toggleAttribute('disabled');
+        } else {
+            Notiflix.Notify.failure('Please choose a date in the future');
+        }
+    },
+};
 
 
 class Timer {
@@ -9,26 +24,13 @@ class Timer {
         this.btnStart = btnStart;
         this.flatpickr = flatpickr;
         this.onShowTime = onShowTime;
-        this.deadlineTime = null;
         this.intervalId = null;
         this.deltaTime = 0;
     }
     init() {
-        const options = {
-            enableTime: true,
-            time_24hr: true,
-            defaultDate: new Date(),
-            minuteIncrement: 1,
-            onClose(selectedDates) {
-                this.deadlineTime = selectedDates[0].getTime();
-                const currentTime = options.defaultDate.getTime();
-                if (this.deadlineTime - currentTime > 0) {
-                    getRef('[data-start]').toggleAttribute('disabled');
-                } else {
-                    Notiflix.Notify.failure('Please choose a date in the future');
-                }
-            },
-        };
+
+
+
         this.flatpickr('#datetime-picker', options);
         this.addListeners();
         this.btnStart.setAttribute('disabled', true);
@@ -50,8 +52,12 @@ class Timer {
     }
     onGetTime() {
         const currentTime = Date.now();
-        this.deltaTime = this.deadlineTime - currentTime;
+        this.deltaTime = deadlineTime - currentTime;
         const time = this.convertMs(this.deltaTime);
+        console.log(currentTime);
+        console.log(this.deltaTime);
+        console.log(deadlineTime);
+
         this.onShowTime(time);
     }
     onStopTimer() {
@@ -88,10 +94,10 @@ const settings = {
 
 new Timer(settings).init();
 
-
 function onShowTime({ days, hours, minutes, seconds }) {
     getRef('[data-days]').textContent = days;
     getRef('[data-hours]').textContent = hours;
     getRef('[data-minutes]').textContent = minutes;
     getRef('[data-seconds]').textContent = seconds;
-};
+}
+
