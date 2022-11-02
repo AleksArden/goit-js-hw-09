@@ -30,8 +30,6 @@ class Timer {
     }
     init() {
 
-
-
         this.flatpickr('#datetime-picker', this.options);
         this.addListeners();
         this.btnStart.setAttribute('disabled', true);
@@ -55,10 +53,6 @@ class Timer {
         const currentTime = Date.now();
         this.deltaTime = deadlineTime - currentTime;
         const time = this.convertMs(this.deltaTime);
-        console.log(currentTime);
-        console.log(this.deltaTime);
-        console.log(deadlineTime);
-
         this.onShowTime(time);
     }
     onStopTimer() {
@@ -71,8 +65,8 @@ class Timer {
         const hour = minute * 60;
         const day = hour * 24;
 
-        const days = Math.floor(ms / day);
-        const hours = Math.floor((ms % day) / hour);
+        const days = this.addLeadingZero(Math.floor(ms / day));
+        const hours = this.addLeadingZero(Math.floor((ms % day) / hour));
         const minutes = this.addLeadingZero(
             Math.floor(((ms % day) % hour) / minute)
         );
