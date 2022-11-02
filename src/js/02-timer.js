@@ -1,7 +1,7 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
-
+let deadlineTime = null;
 const options = {
     enableTime: true,
     time_24hr: true,
@@ -20,9 +20,10 @@ const options = {
 
 
 class Timer {
-    constructor({ btnStart, flatpickr, onShowTime }) {
+    constructor({ btnStart, flatpickr, options, onShowTime }) {
         this.btnStart = btnStart;
         this.flatpickr = flatpickr;
+        this.options = options;
         this.onShowTime = onShowTime;
         this.intervalId = null;
         this.deltaTime = 0;
@@ -31,7 +32,7 @@ class Timer {
 
 
 
-        this.flatpickr('#datetime-picker', options);
+        this.flatpickr('#datetime-picker', this.options);
         this.addListeners();
         this.btnStart.setAttribute('disabled', true);
     }
@@ -89,6 +90,7 @@ let getRef = x => document.querySelector(x);
 const settings = {
     btnStart: getRef('[data-start]'),
     flatpickr,
+    options,
     onShowTime,
 };
 
